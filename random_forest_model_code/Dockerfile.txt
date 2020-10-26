@@ -1,0 +1,27 @@
+FROM python:3.7.4
+
+# RUN apt-get update -y && \
+#     apt-get install -y python-pip python-dev
+
+# RUN apt-get update \
+#     && apt-get install -y \
+#         cmake libsm6 libxext6 libxrender-dev protobuf-compiler \
+#     && rm -r /var/lib/apt/lists/*
+
+COPY ./requirements.txt /app/requirements.txt
+
+WORKDIR /app
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+RUN python -m nltk.downloader wordnet
+
+COPY . /app
+
+EXPOSE 5000
+
+# ENTRYPOINT [ "python" ]
+
+# CMD [ "app.py" ]
+
+CMD ["flask", "run", "--host", "0.0.0.0"]
